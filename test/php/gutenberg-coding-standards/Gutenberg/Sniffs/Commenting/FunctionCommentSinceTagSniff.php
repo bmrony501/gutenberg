@@ -20,6 +20,15 @@ use PHP_CodeSniffer\Util\Tokens;
 class FunctionCommentSinceTagSniff implements Sniff {
 
 	/**
+	 * Disable the check for functions with a lower visibility than the value given.
+	 *
+	 * Allowed values are public, protected, and private.
+	 *
+	 * @var string
+	 */
+	public $minimumVisibility = 'private';
+
+	/**
 	 * This property is used to store results returned
 	 * by the static::is_experimental_block() method.
 	 *
@@ -35,8 +44,8 @@ class FunctionCommentSinceTagSniff implements Sniff {
 	public function register() {
 		return array(
 			//T_FUNCTION,
-			//T_PROPERTY,
-			T_CLASS
+			T_PROPERTY,
+			//T_CLASS
 		);
 	}
 
@@ -139,7 +148,16 @@ class FunctionCommentSinceTagSniff implements Sniff {
 	}
 
 	public function process_class_property_token( File $phpcsFile, $stackPtr ) {
+		$scopeModifier = $phpcsFile->getMethodProperties($stackPtr)['scope'];
+		if (($scopeModifier === 'protected'
+		     && $this->minimumVisibility === 'public')
+		    || ($scopeModifier === 'private'
+		        && ($this->minimumVisibility === 'public' || $this->minimumVisibility === 'protected'))
+		) {
+			return;
+		}
 
+		$a = 5;
 	}
 
 	protected function process_function_token( File $phpcsFile, $stackPtr ) {
@@ -162,6 +180,15 @@ class FunctionCommentSinceTagSniff implements Sniff {
 		$function_name = $phpcsFile->getDeclarationName( $stackPtr );
 
 		if ( $is_class_method ) {
+			$scopeModifier = $phpcsFile->getMethodProperties($stackPtr)['scope'];
+			if (($scopeModifier === 'protected'
+			     && $this->minimumVisibility === 'public')
+			    || ($scopeModifier === 'private'
+			        && ($this->minimumVisibility === 'public' || $this->minimumVisibility === 'protected'))
+			) {
+				return;
+			}
+
 			$function_name = $phpcsFile->getDeclarationName( $class_token ) . '::' . $function_name;
 		}
 
