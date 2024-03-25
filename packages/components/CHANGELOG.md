@@ -9,6 +9,8 @@
 ### Internal
 
 -   `Popover`, `ColorPicker`: Obviate pointer event trap #59449 ([#59449](https://github.com/WordPress/gutenberg/pull/59449)).
+-   Update `date-fns` to version `3.6.0` ([#60163](https://github.com/WordPress/gutenberg/pull/60163)).
+-   Update `use-lilius` to version `2.0.4` ([#60163](https://github.com/WordPress/gutenberg/pull/60163)).
 
 ## 27.2.0 (2024-03-21)
 
