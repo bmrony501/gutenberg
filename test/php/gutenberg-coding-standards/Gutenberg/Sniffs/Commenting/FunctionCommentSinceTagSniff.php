@@ -44,7 +44,7 @@ class FunctionCommentSinceTagSniff implements Sniff {
 	public function register() {
 		return array(
 			//T_FUNCTION,
-			T_PROPERTY,
+			T_VARIABLE,
 			//T_CLASS
 		);
 	}
@@ -69,8 +69,19 @@ class FunctionCommentSinceTagSniff implements Sniff {
 			return;
 		}
 
-		if ( 'T_PROPERTY' === $token['type'] ) {
-			$this->process_class_property_token( $phpcsFile, $stackPtr );
+		if ( 'T_VARIABLE' === $token['type'] ) {
+			$class_property_tokens = array(
+				T_PUBLIC,
+				T_PROTECTED,
+				T_PRIVATE,
+				T_VAR
+			);
+
+			$class_property = $phpcsFile->findPrevious( $class_property_tokens, $stackPtr, null, false, null, true );
+			if ( false !== $class_property ) {
+				$this->process_class_property_token( $phpcsFile, $stackPtr );
+			}
+
 			return;
 		}
 
@@ -148,16 +159,7 @@ class FunctionCommentSinceTagSniff implements Sniff {
 	}
 
 	public function process_class_property_token( File $phpcsFile, $stackPtr ) {
-		$scopeModifier = $phpcsFile->getMethodProperties($stackPtr)['scope'];
-		if (($scopeModifier === 'protected'
-		     && $this->minimumVisibility === 'public')
-		    || ($scopeModifier === 'private'
-		        && ($this->minimumVisibility === 'public' || $this->minimumVisibility === 'protected'))
-		) {
-			return;
-		}
 
-		$a = 5;
 	}
 
 	protected function process_function_token( File $phpcsFile, $stackPtr ) {
