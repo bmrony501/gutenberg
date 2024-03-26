@@ -8,7 +8,8 @@
 
 ### Internal
 
--   `Popover`, `ColorPicker`: Obviate pointer event trap #59449 ([#59449](https://github.com/WordPress/gutenberg/pull/59449)).
+-   `Popover`, `ColorPicker`: Obviate pointer event trap ([#59449](https://github.com/WordPress/gutenberg/pull/59449)).
+-   `NavigatorProvider`: Simplify the router state logic ([#60190](https://github.com/WordPress/gutenberg/pull/60190)).
 
 ## 27.2.0 (2024-03-21)
 
