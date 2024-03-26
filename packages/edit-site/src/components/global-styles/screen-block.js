@@ -30,6 +30,12 @@ const BACKGROUND_BLOCK_DEFAULT_CONTROL_VALUES = {
 	backgroundSize: 'cover',
 };
 
+// Default controls for the background panel for blocks.
+const BACKGROUND_BLOCK_DEFAULT_CONTROLS = {
+	backgroundImage: true,
+	backgroundSize: false,
+};
+
 function applyFallbackStyle( border ) {
 	if ( ! border ) {
 		return border;
@@ -323,6 +329,7 @@ function ScreenBlock( { name, variation } ) {
 					value={ style }
 					onChange={ onChangeBackground }
 					settings={ settings }
+					defaultControls={ BACKGROUND_BLOCK_DEFAULT_CONTROLS }
 					defaultControlValues={
 						BACKGROUND_BLOCK_DEFAULT_CONTROL_VALUES
 					}
